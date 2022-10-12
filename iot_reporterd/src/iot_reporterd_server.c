@@ -32,7 +32,6 @@ int initiate_device(char* args[], IoTPConfig **config, IoTPDevice **device)
 
 int send_data_to_server(char data[], IoTPDevice *device){
 	IOTPRC rc;
-	syslog(LOG_DEBUG, "data: %s", data);
 	rc = IoTPDevice_sendEvent(device,"status", data, "json", QoS0, NULL);
 	return rc;
 }

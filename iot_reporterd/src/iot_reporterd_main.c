@@ -70,7 +70,6 @@ int main(int argc, char **argv)
 			syslog(LOG_ERR, "couldn't invoke ubus method");
 			break;
 		}
-		printf("Buffer -> %s\n", buff);
 		rc = send_data_to_server(buff, device);
 		if( rc ){
 			syslog(LOG_ERR, "couldn't send data to the server: %d", rc);
