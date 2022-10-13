@@ -43,3 +43,23 @@ void read_memory_info(struct ubus_request *req, int type,
 			blobmsg_get_u64(memory[SHARED_MEMORY]), blobmsg_get_u64(memory[BUFFERED_MEMORY]));
 }
 
+int handle_ubus_error(int error, struct ubus_context *ctx, uint32_t *id)
+{
+	int rc = 0;
+	switch (error)
+	{
+	case UBUS_STATUS_CONNECTION_FAILED:
+		ctx = ubus_connect(NULL);
+		if(!ctx)
+			break;
+	case UBUS_STATUS_NOT_FOUND | UBUS_STATUS_METHOD_NOT_FOUND:
+		rc = ubus_lookup_id(ctx, "system", id);
+		if(rc)
+			break;
+		return 0;
+	default:
+		rc = 1;
+	}
+	syslog(LOG_ERR, "Failed to handle error: %d", error);
+	return rc;
+}

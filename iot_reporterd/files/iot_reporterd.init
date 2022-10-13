@@ -9,13 +9,13 @@ start_service() {
         config_get enabled iot_reporterd_sct 'enable' '0'
 
 		if [ "$enabled" -eq 1 ]; then
-			config_get t iot_reporterd_sct 'time'
-			config_get oID iot_reporterd_sct 'orgId'
-			config_get tID iot_reporterd_sct 'typeId'
-			config_get dID iot_reporterd_sct 'deviceId'
-			config_get token iot_reporterd_sct 'token'
+			config_get t iot_reporterd_sct 'time' 10
+			config_get oID iot_reporterd_sct 'orgId' ''
+			config_get tID iot_reporterd_sct 'typeId' ''
+			config_get dID iot_reporterd_sct 'deviceId' ''
+			config_get token iot_reporterd_sct 'token' ''
 			procd_open_instance
-			procd_set_param command /usr/bin/iot_reporterd -t "$t" "$oID" "$tID" "$dID" "$token"
+			procd_set_param command /usr/bin/iot_reporterd -t "$t" -o "$oID" -y "$tID" -d "$dID" -k "$token"
 			procd_set_param file /etc/config/iot_reporterd
 			procd_close_instance
 		fi
